@@ -108,6 +108,8 @@ RUN pip install --upgrade pip --trusted-host pypi.org --trusted-host files.pytho
  && pip install --no-cache-dir -U \
     https://torchvision-build.s3.amazonaws.com/1.4.0/py3/cpu/torchvision-0.5.0%2Bcpu-cp36-cp36m-linux_x86_64.whl
 
+RUN pip install -r requirements.txt
+
 RUN chmod +x /usr/local/bin/start_with_right_hostname.sh
 
 RUN curl -o /license.txt https://aws-dlc-licenses.s3.amazonaws.com/pytorch-1.4.0/license.txt

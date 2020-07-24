@@ -25,6 +25,9 @@
       start_with_right_hostname:
         source: docker/build_artifacts/start_with_right_hostname.sh
         target: start_with_right_hostname.sh
+      requirements:
+        source: docker/build_artifacts/requirements.txt
+        target: requirements.txt
     inference_context: &INFERENCE_CONTEXT
       mms-entrypoint:
         source: docker/build_artifacts/mms-entrypoint.py
@@ -40,7 +43,7 @@
     BuildCPUPTTrainPy3DockerImage:
       <<: *TRAINING_REPOSITORY
       build: &PYTORCH_CPU_TRAINING_PY3 false
-      image_size_baseline: 4899
+      image_size_baseline: 6400
       device_type: &DEVICE_TYPE cpu
       python_version: &DOCKER_PYTHON_VERSION py3
       tag_python_version: &TAG_PYTHON_VERSION py36
