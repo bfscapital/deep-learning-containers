@@ -11,30 +11,15 @@ phases:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - pip install -r src/requirements.txt
-      - bash src/setup.sh $FRAMEWORK
+      - bash src/setup.sh $pytorch
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - |
-        if expr "${CODEBUILD_BUILD_ARN}" : ".*eia" >/dev/null; then
-          if expr "${CODEBUILD_BUILD_ARN}" : ".*tensorflow-1" >/dev/null; then
-            python src/main.py --buildspec $FRAMEWORK/buildspec-tf1-eia.yml --framework $FRAMEWORK
-          else
-            python src/main.py --buildspec $FRAMEWORK/buildspec-eia.yml --framework $FRAMEWORK
-          fi
-        else
-          if expr "${CODEBUILD_BUILD_ARN}" : ".*tensorflow-1" >/dev/null; then
-            python src/main.py --buildspec $FRAMEWORK/buildspec-tf1.yml --framework $FRAMEWORK
-          else
-            python src/main.py --buildspec $FRAMEWORK/buildspec.yml --framework $FRAMEWORK
-          fi
-        fi
+      - python src/main.py --buildspec pytorch/buildspec-1-4.yml --framework pytorch --image_types training --device_types cpu --py_versions py3
   post_build:
     commands:
       - echo Build step finished on `date`
-      - echo Starting test jobs
-      - python src/start_testbuilds.py
 artifacts:
   files:
     - $HOME/test_type_images.json
